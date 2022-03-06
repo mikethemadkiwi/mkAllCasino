@@ -91,6 +91,18 @@ end
 function WarpVehicle(zone)
     print('i should have warped a vehicle')
     -- check vehicle collision of location for placement. the tp WITH players.
+    local ped = PlayerPedId()    
+    local vehicle = GetVehiclePedIsIn(ped, true)
+    FreezeEntityPosition(PlayerPedId(), true)
+
+    DoScreenFadeOut(1000)
+    while IsScreenFadingOut() do Citizen.Wait(0) end
+    SetEntityCoords(vehicle, zone.exitPos.x, zone.exitPos.y, zone.exitPos.z - 0.8)
+    Citizen.Wait(500)
+    FreezeEntityPosition(PlayerPedId(), false)
+    SetEntityHeading(ped, zone.exitHeading)
+    DoScreenFadeIn(1000)
+    while IsScreenFadingIn() do Citizen.Wait(0)	end
 end
 -----------------------------------------
 function WarpVeh2Foot(zone)
@@ -103,7 +115,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
         -----------------------------------------
         for door = 1, #LockedDoors do
-            local door = GetClosestObjectOfType(LockedDoors[door].vec.x, LockedDoors[door].vec.y, LockedDoors[door].vec.z, 1.0, LockedDoors[door].hash, false, false, false);
+            local door = GetClosestObjectOfType(LockedDoors[door].vec.x, LockedDoors[door].vec.y, LockedDoors[door].vec.z, 1.0, LockedDoors[door].hash, false, false, false);            
             FreezeEntityPosition(door, true)
         end
         -----------------------------------------

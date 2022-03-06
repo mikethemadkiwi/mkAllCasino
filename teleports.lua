@@ -138,6 +138,38 @@ PlayerTeleports = {
         exitHeading = 218.0,
         restricted =  false,
         restrictedGroups = {}
+    },
+    {
+        name = 'hoteltodeck_side IN',
+        entryPos = vector3(986.773, 75.806, 111.263),
+        exitPos = vector3(2525.600, -289.7, -39.122),
+        exitHeading = 86.221,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = 'hoteltodeck_side OUT',
+        entryPos = vector3(2526.843, -289.932, -39.122),
+        exitPos = vector3(988.773, 77.616, 111.233),
+        exitHeading = 304.0,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = 'hoteltodeck_front IN',
+        entryPos = vector3(2488.095, -293.612, -39.122),
+        exitPos = vector3(955.384, 2.905, 111.259),
+        exitHeading = 243.715,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = 'hoteltodeck_front OUT',
+        entryPos = vector3(953.307, 4.398, 111.268),
+        exitPos = vector3(2488.297, -290.884, -39.122),
+        exitHeading = 354.144,
+        restricted =  false,
+        restrictedGroups = {}
     }
 }
 -----------------------------------------

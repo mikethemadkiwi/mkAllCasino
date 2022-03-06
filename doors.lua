@@ -3,6 +3,7 @@
 --     name = "EXAMPLE", 
     -- hash = 7615432876,
     -- vec = vector3(0, 0, 0),
+    -- heading = 000.00,
 --     locked = false,
 --     restricted =  false,
     -- restrictedGroups = {}
