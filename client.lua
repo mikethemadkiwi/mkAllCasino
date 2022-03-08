@@ -53,7 +53,7 @@ function AddElevatorZone(floor, floorList, shaftType)
         name=floor.name,
         useZ=true,
         data={'elevator', floor, floorList, shaftType},
-        debugPoly=true
+        debugPoly=false
     }))    
 end
 -----------------------------------------
@@ -71,7 +71,7 @@ function AddVehicleWarpZone(warp)
         name=warp.name,
         useZ=true,
         data={'vehicle',warp},
-        debugPoly=true
+        debugPoly=false
     }))    
 end
 -----------------------------------------
@@ -93,13 +93,14 @@ function WarpVehicle(zone)
     -- check vehicle collision of location for placement. the tp WITH players.
     local ped = PlayerPedId()    
     local vehicle = GetVehiclePedIsIn(ped, true)
-    FreezeEntityPosition(PlayerPedId(), true)
-
+    FreezeEntityPosition(ped, true)
+    FreezeEntityPosition(vehicle, true)
     DoScreenFadeOut(1000)
     while IsScreenFadingOut() do Citizen.Wait(0) end
     SetEntityCoords(vehicle, zone.exitPos.x, zone.exitPos.y, zone.exitPos.z - 0.8)
     Citizen.Wait(500)
-    FreezeEntityPosition(PlayerPedId(), false)
+    FreezeEntityPosition(ped, false)
+    FreezeEntityPosition(vehicle, false)
     SetEntityHeading(ped, zone.exitHeading)
     DoScreenFadeIn(1000)
     while IsScreenFadingIn() do Citizen.Wait(0)	end
