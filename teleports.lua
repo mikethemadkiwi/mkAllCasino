@@ -2,15 +2,15 @@
 ------       Player TelePorts       -----
 -----------------------------------------
 PlayerTeleports = {
-    {
-        name = 'DEBUG',
-        -- currently hospital bathroom in shower to casino
-        entryPos = vector3(340.2, -596.9, 43.3),
-        exitPos = vector3(1089.7, 209.1, -48.9999),
-        exitHeading = 0.0,
-        restricted =  false,
-        restrictedGroups = {}
-    },
+    -- {
+    --     name = 'DEBUG',
+    --     -- currently hospital bathroom in shower to casino
+    --     entryPos = vector3(340.2, -596.9, 43.3),
+    --     exitPos = vector3(1089.7, 209.1, -48.9999),
+    --     exitHeading = 0.0,
+    --     restricted =  false,
+    --     restrictedGroups = {}
+    -- },
     {
         name = 'Entrance IN',
         entryPos = vector3(935.7,47.0,81.1),
