@@ -1,6 +1,17 @@
+local MKDEBUGSHOW = false -- shows polyzone and onscreen closest door perms
 -------------------------------------
--- vehicle warp.
 -- remove player from vehicle THEN pedwarp
+-------------------------------------
+-- perms for security
+-- {
+--     diamond.owner
+--     diamond.manager
+--     casino.manager
+--     hotel.manager
+--     diamond.staff
+--     diamond.penthouse
+--     casino.vip
+-- }
 -------------------------------------
 Citizen.CreateThread(function()
     RequestAllIpls()
@@ -47,13 +58,16 @@ local PlayerPList = {}
 local ElevatorRadius = 1.5
 local VehicleRadius = 5.0
 local PlayerRadius = 1.0
+-- Door Detection
+local cd_distance = 25
+local closestDoor = nil
 -----------------------------------------
 function AddElevatorZone(floor, floorList, shaftType)
     table.insert(ElevatorPZones, CircleZone:Create(vector3(floor.entryPos[1], floor.entryPos[2], floor.entryPos[3]), ElevatorRadius, {
         name=floor.name,
         useZ=true,
         data={'elevator', floor, floorList, shaftType},
-        debugPoly=false
+        debugPoly=MKDEBUGSHOW
     }))    
 end
 -----------------------------------------
@@ -62,7 +76,7 @@ function AddPlayerWarpZone(warp)
         name=warp.name,
         useZ=true,
         data={'player',warp},
-        debugPoly=false
+        debugPoly=MKDEBUGSHOW
     }))    
 end
 -----------------------------------------
@@ -71,7 +85,7 @@ function AddVehicleWarpZone(warp)
         name=warp.name,
         useZ=true,
         data={'vehicle',warp},
-        debugPoly=false
+        debugPoly=MKDEBUGSHOW
     }))    
 end
 -----------------------------------------
@@ -89,7 +103,6 @@ function WarpPlayer(zone)
 end
 -----------------------------------------
 function WarpVehicle(zone)
-    print('i should have warped a vehicle')
     -- check vehicle collision of location for placement. the tp WITH players.
     local ped = PlayerPedId()    
     local vehicle = GetVehiclePedIsIn(ped, true)
@@ -111,24 +124,127 @@ function WarpVeh2Foot(zone)
     -- remove player from vehicle, delete vehicle then teleport inside.
 end
 -----------------------------------------
+drawOnScreen2D = function(text, r, g, b, a, x, y, scale)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextScale(scale, scale)
+    SetTextColour(r, g, b, a)
+    SetTextDropShadow(0, 0, 0, 0, 255)
+    SetTextEdge(1, 0, 0, 0, 255)
+    SetTextDropShadow()
+    SetTextOutline()
+    
+    BeginTextCommandDisplayText("STRING")
+    AddTextComponentSubstringPlayerName(text)
+    EndTextCommandDisplayText(x, y)
+end
+-----------------------------------------
+function UpdateDoorState(CurrDoor)
+    if CurrDoor.DoorDistance <= cd_distance then
+        cd_distance = CurrDoor.DoorDistance
+        closestDoor = CurrDoor
+    end
+    if CurrDoor.locked then
+        -- DoorSystemSetDoorState(CurrDoor.DOOR_UUID, 6, false, false)
+        DoorSystemSetDoorState(CurrDoor.DOOR_UUID, 4, false, false) -- force close
+        DoorSystemSetDoorState(CurrDoor.DOOR_UUID, 1, false, false) -- lock
+        DoorSystemSetAutomaticRate(CurrDoor.DOOR_UUID, 1.7, 0, 0)
+        --
+        FreezeEntityPosition(CurrDoor.doorObj, true) -- these seem to still work best to hard lock/unlock
+        
+    else
+        DoorSystemSetDoorState(CurrDoor.DOOR_UUID, 0, false, false) -- unlock
+        DoorSystemSetAutomaticRate(CurrDoor.DOOR_UUID, 1.7, 0, 0)
+        --
+        FreezeEntityPosition(CurrDoor.doorObj, false)
+    end
+end
+-----------------------------------------
 Citizen.CreateThread(function()
 	while true do 
 		Citizen.Wait(0)
+        pCoords = GetEntityCoords(PlayerPedId())
         -----------------------------------------
         for door = 1, #LockedDoors do
-            local door = GetClosestObjectOfType(LockedDoors[door].vec.x, LockedDoors[door].vec.y, LockedDoors[door].vec.z, 1.0, LockedDoors[door].hash, false, false, false);            
-            FreezeEntityPosition(door, true)
+            local DoorDistance = #(pCoords -  LockedDoors[door].vec)
+            if DoorDistance < 25 then         
+                LockedDoors[door].doorObj = GetClosestObjectOfType(LockedDoors[door].vec.x, LockedDoors[door].vec.y, LockedDoors[door].vec.z, 1.0, LockedDoors[door].hash, false, false, false);
+                if LockedDoors[door].doorObj then   
+                    LockedDoors[door].DOOR_UUID = 'ld_'..door..''
+                    LockedDoors[door].DoorDistance =  DoorDistance
+                    if not IsDoorRegisteredWithSystem(LockedDoors[door].DOOR_UUID) then
+                        AddDoorToSystem(LockedDoors[door].DOOR_UUID, LockedDoors[door].doorObj, LockedDoors[door].vec, false, false, false)
+                        -- print('Adding: ['.. LockedDoors[door].DOOR_UUID ..'] '..LockedDoors[door].name..'')
+                        UpdateDoorState(LockedDoors[door])
+                    else
+                        UpdateDoorState(LockedDoors[door])
+                    end
+                end
+            elseif LockedDoors[door].doorObj then
+                -- print('Removing: ['.. LockedDoors[door].DOOR_UUID ..'] '..LockedDoors[door].name..'')
+                RemoveDoorFromSystem(LockedDoors[door].DOOR_UUID)
+                LockedDoors[door].doorObj = nil
+            end
         end
+        
         -----------------------------------------
         for door = 1, #UnlockedDoors do
-            local door = GetClosestObjectOfType(UnlockedDoors[door].vec.x, UnlockedDoors[door].vec.y, UnlockedDoors[door].vec.z, 1.0, UnlockedDoors[door].hash, false, false, false);
-            FreezeEntityPosition(door, false)
+            local DoorDistance = #(pCoords -  UnlockedDoors[door].vec)
+            if DoorDistance < 59 then         
+                UnlockedDoors[door].doorObj = GetClosestObjectOfType(UnlockedDoors[door].vec.x, UnlockedDoors[door].vec.y, UnlockedDoors[door].vec.z, 1.0, UnlockedDoors[door].hash, false, false, false);
+                if UnlockedDoors[door].doorObj then   
+                    UnlockedDoors[door].DOOR_UUID = 'ud_'..door..''
+                    UnlockedDoors[door].DoorDistance =  DoorDistance
+                    if not IsDoorRegisteredWithSystem(UnlockedDoors[door].DOOR_UUID) then
+                        AddDoorToSystem(UnlockedDoors[door].DOOR_UUID, UnlockedDoors[door].doorObj, UnlockedDoors[door].vec, false, false, false)
+                        -- print('Adding: ['.. UnlockedDoors[door].DOOR_UUID ..'] '..UnlockedDoors[door].name..'')
+                        UpdateDoorState(UnlockedDoors[door])
+                    else
+                        UpdateDoorState(UnlockedDoors[door])
+                    end
+                end
+            elseif UnlockedDoors[door].doorObj then
+                -- print('Removing: ['.. UnlockedDoors[door].DOOR_UUID ..'] '..UnlockedDoors[door].name..'')
+                RemoveDoorFromSystem(UnlockedDoors[door].DOOR_UUID)
+                UnlockedDoors[door].doorObj = nil
+            end
         end
         -----------------------------------------
+        cd_distance = 59
+        closestDoor = nil
+        -----------------------------------------
         for door = 1, #AlterableDoors do
-            local door = GetClosestObjectOfType(AlterableDoors[door].vec.x, AlterableDoors[door].vec.y, AlterableDoors[door].vec.z, 1.0, AlterableDoors[door].hash, false, false, false);
-            FreezeEntityPosition(door, AlterableDoors[door].locked)
+            local DoorDistance = #(pCoords -  AlterableDoors[door].vec)
+            if DoorDistance < 59 then         
+                AlterableDoors[door].doorObj = GetClosestObjectOfType(AlterableDoors[door].vec.x, AlterableDoors[door].vec.y, AlterableDoors[door].vec.z, 1.0, AlterableDoors[door].hash, false, false, false);
+                if AlterableDoors[door].doorObj then   
+                    AlterableDoors[door].DOOR_UUID = 'ad_'..door..''
+                    AlterableDoors[door].DoorDistance =  DoorDistance
+                    if not IsDoorRegisteredWithSystem(AlterableDoors[door].DOOR_UUID) then
+                        AddDoorToSystem(AlterableDoors[door].DOOR_UUID, AlterableDoors[door].doorObj, AlterableDoors[door].vec, false, false, false)
+                        -- print('Adding: ['.. AlterableDoors[door].DOOR_UUID ..'] '..AlterableDoors[door].name..'')
+                        UpdateDoorState(AlterableDoors[door])
+                    else
+                        UpdateDoorState(AlterableDoors[door])
+                    end
+                end
+            elseif AlterableDoors[door].doorObj then
+                -- print('Removing: ['.. AlterableDoors[door].DOOR_UUID ..'] '..AlterableDoors[door].name..'')
+                RemoveDoorFromSystem(AlterableDoors[door].DOOR_UUID)
+                AlterableDoors[door].doorObj = nil
+            end
         end
+        -----------------------------------------
+        if closestDoor then
+            if MKDEBUGSHOW then
+                if closestDoor.locked then
+                    drawOnScreen2D('~r~MKCASINODEBUG ~o~ Closest DOOR [~w~'..closestDoor.DOOR_UUID..'~o~] Locked: ~r~ true', 255, 255, 255, 255, 0.05, 0.15, 0.3)
+                else
+                    drawOnScreen2D('~r~MKCASINODEBUG ~o~ Closest DOOR [~w~'..closestDoor.DOOR_UUID..'~o~] Locked: ~g~ false', 255, 255, 255, 255, 0.05, 0.15, 0.3)
+                end
+            end
+        end 
+        -----------------------------------------
     end
 end)
 -----------------------------------------
@@ -153,8 +269,8 @@ Citizen.CreateThread(function()
     end
     -- Make the PloyZones and Behaviours.
     PlayerPList = ComboZone:Create(PlayerPZones, {name="PlayerPZones", debugPoly=false})
-    ElevatorPList = ComboZone:Create(ElevatorPZones, {name="ElevatorPZones", debugPoly=true})
-    VehiclePList = ComboZone:Create(VehiclePZones, {name="VehiclePZones", debugPoly=true})
+    ElevatorPList = ComboZone:Create(ElevatorPZones, {name="ElevatorPZones", debugPoly=false})
+    VehiclePList = ComboZone:Create(VehiclePZones, {name="VehiclePZones", debugPoly=false})
     -- Listen to Movement in them and trigger responses
     -----------------------------------------
     PlayerPList:onPlayerInOut(function(isPointInside, point, zone)
