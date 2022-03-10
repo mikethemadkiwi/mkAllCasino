@@ -64,7 +64,7 @@ PlayerTeleports = {
         entryPos = vector3(2501.2, -271.9, -58.7),
         exitPos = vector3(1119.5, 222.2, -49.4),
         exitHeading = 151.4,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {}
     },
     {
@@ -72,7 +72,7 @@ PlayerTeleports = {
         entryPos = vector3(1121.1, 222.0, -49.4),
         exitPos = vector3(2502.8, -271.4, -58.7),
         exitHeading = 259.0,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {}
     },
     {
@@ -96,7 +96,7 @@ PlayerTeleports = {
         entryPos = vector3(959.8, 32.5, 120.2),
         exitPos = vector3(2522.2, -246.2, -24.1),
         exitHeading = 171.5,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {'diamond.staff'}
     },
     {
@@ -104,7 +104,7 @@ PlayerTeleports = {
         entryPos = vector3(2521.8, -243.7, -24.1),
         exitPos = vector3(956.5, 30.7, 120.2),
         exitHeading = 176.5,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {'diamond.staff'}
     },
     {
@@ -128,7 +128,7 @@ PlayerTeleports = {
         entryPos = vector3(2541.1, -211.5, -58.7),
         exitPos = vector3(993.9, 77.9, 81.0),
         exitHeading = 328.0,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {'diamond.staff'}
     },
     {
@@ -136,7 +136,7 @@ PlayerTeleports = {
         entryPos = vector3(992.7, 76.1, 81.0),
         exitPos = vector3(2542.0, -213.9, -58.7),
         exitHeading = 218.0,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {'diamond.staff'}
     },
     {
@@ -197,7 +197,7 @@ VehicleTeleports = {
         entryPos = vector3(1410.7,181.6,-49.4),
         exitPos = vector3(1260.6, 223.0, -48.3),
         exitHeading = 266.0,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {}
     },
     {
@@ -205,7 +205,7 @@ VehicleTeleports = {
         entryPos = vector3(1250.7, 232.8, -47.9),
         exitPos = vector3(1403.0,190.8,-49.0),
         exitHeading = 87.400,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {}
     },
     {
@@ -213,7 +213,7 @@ VehicleTeleports = {
         entryPos = vector3(2652.8, -341.6, -64.7),
         exitPos = vector3(997.5, -59.2, 75.0),
         exitHeading = 115.668,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {}
     },
     {
@@ -221,7 +221,7 @@ VehicleTeleports = {
         entryPos = vector3(998.971, -52.554, 73.956),
         exitPos = vector3(2646.2, -336.3, -64.7),
         exitHeading = 51.542,
-        restricted =  false,
+        restricted =  true,
         restrictedGroups = {}
     }
 }

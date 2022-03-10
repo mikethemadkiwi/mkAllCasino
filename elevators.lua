@@ -63,7 +63,7 @@ ElevatorShaft = {
         },
         {
             name = 'Hotel Rooms',
-            entryPos = vector3(2518.8, -262.1, -39.1),
+            entryPos = vector3(2518.7, -253.8, -39.1),
             exitPos = vector3(2518.6, -258.6, -39.2),
             exitHeading = 353.162,
             restricted =  false,

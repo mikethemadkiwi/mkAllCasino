@@ -752,6 +752,22 @@ AlterableDoors = {
         restricted =  false,
         restrictedGroups = {}
     },
+    {
+        name = "adm_wasteinnerdblleft", 
+        hash = 1938754783,
+        vec = vector3(2547.428, -246.79, -60.173),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "adm_wasteinnerdblright", 
+        hash = 1938754783,
+        vec = vector3(2549.428, -246.79, -60.173),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
     -- Main Floor Security
     {
         name = "sec_staffinner", 

@@ -62,6 +62,9 @@ local PlayerRadius = 1.0
 -- Door Detection
 local cd_distance = 25
 local closestDoor = nil
+-- zone counts
+local zonecount = 0
+local doorcount = 0
 -----------------------------------------
 function AddElevatorZone(floor, floorList, shaftType)
     table.insert(ElevatorPZones, CircleZone:Create(vector3(floor.entryPos[1], floor.entryPos[2], floor.entryPos[3]), ElevatorRadius, {
@@ -69,7 +72,8 @@ function AddElevatorZone(floor, floorList, shaftType)
         useZ=true,
         data={'elevator', floor, floorList, shaftType},
         debugPoly=MKDEBUGSHOW
-    }))    
+    }))
+    zonecount = zonecount + 1   
 end
 -----------------------------------------
 function AddPlayerWarpZone(warp)
@@ -78,7 +82,8 @@ function AddPlayerWarpZone(warp)
         useZ=true,
         data={'player',warp},
         debugPoly=MKDEBUGSHOW
-    }))    
+    }))
+    zonecount = zonecount + 1     
 end
 -----------------------------------------
 function AddVehicleWarpZone(warp)
@@ -87,7 +92,8 @@ function AddVehicleWarpZone(warp)
         useZ=true,
         data={'vehicle',warp},
         debugPoly=MKDEBUGSHOW
-    }))    
+    }))
+    zonecount = zonecount + 1      
 end
 -----------------------------------------
 function WarpPlayer(zone)
@@ -123,6 +129,10 @@ end
 function WarpVeh2Foot(zone)
     print('i should have warped a player after deleting thier vehicle')
     -- remove player from vehicle, delete vehicle then teleport inside.
+end
+function doIHavePerms(zone)
+
+    return true
 end
 -----------------------------------------
 drawOnScreen2D = function(text, r, g, b, a, x, y, scale)
@@ -165,7 +175,9 @@ Citizen.CreateThread(function()
 	while true do 
 		Citizen.Wait(0)
         pCoords = GetEntityCoords(PlayerPedId())
+        doorcount = 0
         -----------------------------------------
+        doorcount = doorcount + #LockedDoors
         for door = 1, #LockedDoors do
             local DoorDistance = #(pCoords -  LockedDoors[door].vec)
             if DoorDistance < 25 then         
@@ -186,9 +198,9 @@ Citizen.CreateThread(function()
                 RemoveDoorFromSystem(LockedDoors[door].DOOR_UUID)
                 LockedDoors[door].doorObj = nil
             end
-        end
-        
+        end        
         -----------------------------------------
+        doorcount = doorcount + #UnlockedDoors
         for door = 1, #UnlockedDoors do
             local DoorDistance = #(pCoords -  UnlockedDoors[door].vec)
             if DoorDistance < 25 then         
@@ -214,6 +226,7 @@ Citizen.CreateThread(function()
         cd_distance = 25
         closestDoor = nil
         -----------------------------------------
+        doorcount = doorcount + #AlterableDoors
         for door = 1, #AlterableDoors do
             local DoorDistance = #(pCoords -  AlterableDoors[door].vec)
             if DoorDistance < 25 then         
@@ -279,12 +292,18 @@ Citizen.CreateThread(function()
             if isPointInside then
                 lastInteractedZone = zone.data
                 isInZone = true
-                local ped = PlayerPedId()
-                if IsPedOnFoot(ped) then
-                    WarpPlayer(zone.data[2])
+                if not zone.data[2].restricted then
+                    local ped = PlayerPedId()
+                    if IsPedOnFoot(ped) then
+                        WarpPlayer(zone.data[2])
+                    else
+                        WarpVeh2Foot(zone.data[2])
+                    end
                 else
-                    WarpVeh2Foot(zone.data[2])
-                end       
+                    
+                    -- check player then tp.
+
+                end    
             else
                 isInZone = false
             end
@@ -294,9 +313,6 @@ Citizen.CreateThread(function()
     ElevatorPList:onPlayerInOut(function(isPointInside, point, zone)
         if zone then
             if isPointInside then
-                if not IsNuiFocused() then
-                    drawOnScreen2D('You are in an Elevator Zone!\nPress "E" to select a floor.', 186, 218, 85, 255, 0.45, 0.25, 0.5)
-                end
                 lastInteractedZone = zone.data
                 isInZone = true 
               else
@@ -310,12 +326,17 @@ Citizen.CreateThread(function()
             if isPointInside then  
                 lastInteractedZone = zone.data             
                 isInZone = true
-                local ped = PlayerPedId()
-                if IsPedOnFoot(ped) then
-                    WarpPlayer(zone.data[2])
+                if not zone.data[2].restricted then
+                    local ped = PlayerPedId()
+                    if IsPedOnFoot(ped) then
+                        WarpPlayer(zone.data[2])
+                    else
+                        WarpVehicle(zone.data[2])
+                    end
                 else
-                    WarpVehicle(zone.data[2])
-                end       
+                    -- check for permissions THEN tp. 
+
+                end
             else
                 isInZone = false
             end
@@ -328,11 +349,14 @@ Citizen.CreateThread(function()
 	while true do
         Citizen.Wait(0)
         if isInZone == true then
-            if IsControlJustPressed(0, 51) then
-                if lastInteractedZone[1] == 'elevator' then 
+            if lastInteractedZone[1] == 'elevator' then
+                if IsControlJustPressed(0, 51) then
                     SendNUIMessage({
                         elevator = lastInteractedZone
                     })
+                end
+                if not IsNuiFocused() then
+                    drawOnScreen2D('You are in an Elevator Zone!\nPress "E" to select a floor.', 186, 218, 85, 255, 0.45, 0.25, 0.5)
                 end
             end
         else            
@@ -343,12 +367,46 @@ Citizen.CreateThread(function()
     end
 end)
 -----------------------------------------
+CreateThread(function()
+	while true do
+		Wait(0)
+        local pCoords = GetEntityCoords(PlayerPedId())
+        for warp = 1, #PlayerTeleports do
+            local pTP = PlayerTeleports[warp]
+            local warpEntryCoords = vector3(pTP.entryPos[1], pTP.entryPos[2], pTP.entryPos[3])
+            local exitDistance = #(pCoords -  warpEntryCoords)
+            if exitDistance < 7.5 then
+                DrawMarker(0, warpEntryCoords.x, warpEntryCoords.y, warpEntryCoords.z + 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.25, 186, 218, 85, 255, true, false, 2, false, nil, nil, false)
+            end
+        end
+        for warp = 1, #VehicleTeleports do
+            local pTP = VehicleTeleports[warp]
+            local warpEntryCoords = vector3(pTP.entryPos[1], pTP.entryPos[2], pTP.entryPos[3])
+            local exitDistance = #(pCoords -  warpEntryCoords)
+            if exitDistance < 15 then
+                DrawMarker(0, warpEntryCoords.x, warpEntryCoords.y, warpEntryCoords.z + 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.25, 186, 218, 85, 255, true, false, 2, false, nil, nil, false)
+            end
+        end
+	end
+end)
+-----------------------------------------
 RegisterNUICallback('nuifocus', function(nuistate, cb)    
     SetNuiFocus(nuistate.state, nuistate.state)
     cb(true)
 end)
 -----------------------------------------
 RegisterNUICallback('floorSelected', function(zone, cb)
-    WarpPlayer(zone[2])
+    
+    if not zone[2].restricted then    
+        WarpPlayer(zone[2])   
+    else
+        -- check for permissions THEN tp.
+    end
     cb(true)
+
 end)
+----------------------------------------------------
+RegisterCommand('mkallcasinoinfo', function(source, args) 
+    print('zones being handled:'..zonecount..'') 
+    print('doors being handled:'..doorcount..'') 
+end,false)
