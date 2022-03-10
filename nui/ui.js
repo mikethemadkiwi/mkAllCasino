@@ -5,7 +5,7 @@ $(function(){
         if(task.elevator){ 
             let Floors = task.elevator[2];       
             // redraw the menu
-            $('#bdmMenu').append(`<h2> Elevator [${task.elevator[3]}] Current Floor [${task.elevator[1].name}] </h2>`);  
+            $('#bdmMenu').append(`<h2> Elevator [${task.elevator[3]}] </h2>`);  
             Floors.forEach(fl => {
                 if(fl.name != task.elevator[1].name){
                     let btn = document.createElement("button");

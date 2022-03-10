@@ -269,9 +269,9 @@ Citizen.CreateThread(function()
         AddVehicleWarpZone(VehicleTeleports[veh])
     end
     -- Make the PloyZones and Behaviours.
-    PlayerPList = ComboZone:Create(PlayerPZones, {name="PlayerPZones", debugPoly=false})
-    ElevatorPList = ComboZone:Create(ElevatorPZones, {name="ElevatorPZones", debugPoly=false})
-    VehiclePList = ComboZone:Create(VehiclePZones, {name="VehiclePZones", debugPoly=false})
+    PlayerPList = ComboZone:Create(PlayerPZones, {name="PlayerPZones", debugPoly=MKDEBUGSHOW})
+    ElevatorPList = ComboZone:Create(ElevatorPZones, {name="ElevatorPZones", debugPoly=MKDEBUGSHOW})
+    VehiclePList = ComboZone:Create(VehiclePZones, {name="VehiclePZones", debugPoly=MKDEBUGSHOW})
     -- Listen to Movement in them and trigger responses
     -----------------------------------------
     PlayerPList:onPlayerInOut(function(isPointInside, point, zone)
@@ -294,6 +294,9 @@ Citizen.CreateThread(function()
     ElevatorPList:onPlayerInOut(function(isPointInside, point, zone)
         if zone then
             if isPointInside then
+                if not IsNuiFocused() then
+                    drawOnScreen2D('You are in an Elevator Zone!\nPress "E" to select a floor.', 186, 218, 85, 255, 0.45, 0.25, 0.5)
+                end
                 lastInteractedZone = zone.data
                 isInZone = true 
               else
@@ -325,7 +328,6 @@ Citizen.CreateThread(function()
 	while true do
         Citizen.Wait(0)
         if isInZone == true then
-            drawOnScreen2D('~w~Press "E" to Select a floor', 186, 218, 85, 1, 0.05, 0.15, 0.3)
             if IsControlJustPressed(0, 51) then
                 if lastInteractedZone[1] == 'elevator' then 
                     SendNUIMessage({

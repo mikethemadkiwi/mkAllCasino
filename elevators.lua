@@ -30,8 +30,8 @@ ElevatorShaft = {
         {
             name = 'Casino Floor',
             entryPos = vector3(1084.0, 212.9, -49.2),
-            exitPos = vector3(1086.1, 214.8, -49.2),
-            exitHeading = 296.162,
+            exitPos = vector3(1084.6, 213.4, -49.2),
+            exitHeading = 315.042,
             restricted =  false,
             restrictedGroups = {}
         },
