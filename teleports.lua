@@ -4,7 +4,7 @@
 PlayerTeleports = {
     {
         name = 'DEBUG',
-        -- currently hospital bathroom in shower to casino
+        -- currently town hall second floor doorway to casino
         entryPos = vector3(-626.1, -132.6, 46.9),
         exitPos = vector3(1089.7, 209.1, -48.9999),
         exitHeading = 0.0,
@@ -97,7 +97,7 @@ PlayerTeleports = {
         exitPos = vector3(2522.2, -246.2, -24.1),
         exitHeading = 171.5,
         restricted =  false,
-        restrictedGroups = {}
+        restrictedGroups = {'diamond.staff'}
     },
     {
         name = 'Engineering to Rooftop',
@@ -105,7 +105,7 @@ PlayerTeleports = {
         exitPos = vector3(956.5, 30.7, 120.2),
         exitHeading = 176.5,
         restricted =  false,
-        restrictedGroups = {}
+        restrictedGroups = {'diamond.staff'}
     },
     {
         name = 'Office to Manager',
@@ -124,20 +124,20 @@ PlayerTeleports = {
         restrictedGroups = {}
     },
     {
-        name = 'GarbageRoom OUT',
+        name = 'GarbageRoom INSIDE',
         entryPos = vector3(2541.1, -211.5, -58.7),
         exitPos = vector3(993.9, 77.9, 81.0),
         exitHeading = 328.0,
         restricted =  false,
-        restrictedGroups = {}
+        restrictedGroups = {'diamond.staff'}
     },
     {
-        name = 'GarbageRoom OUT',
+        name = 'GarbageRoom OUTSIDE',
         entryPos = vector3(992.7, 76.1, 81.0),
         exitPos = vector3(2542.0, -213.9, -58.7),
         exitHeading = 218.0,
         restricted =  false,
-        restrictedGroups = {}
+        restrictedGroups = {'diamond.staff'}
     },
     {
         name = 'hoteltodeck_side IN',

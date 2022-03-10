@@ -744,6 +744,14 @@ AlterableDoors = {
         restricted =  false,
         restrictedGroups = {}
     },
+    {
+        name = "adm_wastemanagement", 
+        hash = -35610440,
+        vec = vector3(2544.058, -263.391, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
     -- Main Floor Security
     {
         name = "sec_staffinner", 
@@ -874,9 +882,136 @@ AlterableDoors = {
         restricted =  false,
         restrictedGroups = {}
     },
-    -- Staff Area
-    -- Waste Management
+    -- Staff Area,
+    {
+        name = "staff_halltolaundryleft", 
+        hash = -267451115,
+        vec = vector3(2541.699, -293.39, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_halltolaundryright", 
+        hash = -267451115,
+        vec = vector3(2539.699, -293.39, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_halltolaundrysingledoor", 
+        hash = -35610440,
+        vec = vector3(2536.039, -293.39, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_halltouniformstorage", 
+        hash = -35610440,
+        vec = vector3(2531.154, -293.39, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_halltolockers1", 
+        hash = -35610440,
+        vec = vector3(2526.124, -293.39, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_halltolockers2", 
+        hash = -35610440,
+        vec = vector3(2516.017, -293.39, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_halllaundrymid", 
+        hash = -35610440,
+        vec = vector3(2537.949, -291.55, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_halllockersmidleft", 
+        hash = -267451115,
+        vec = vector3(2520.12, -291.93, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_halllockersmidright", 
+        hash = -267451115,
+        vec = vector3(2520.12, -289.93, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_uniformstolockersinner", 
+        hash = -35610440,
+        vec = vector3(2528.644, -295.2, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_laundrytouniformsinner1", 
+        hash = -35610440,
+        vec = vector3(2533.604, -294.2, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "staff_laundrytouniformsinner2", 
+        hash = -35610440,
+        vec = vector3(2533.604, -301.43, -58.573),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
     -- Vault
+    {
+        name = "vault_secouter", 
+        hash = 1243560448,
+        vec = vector3(2475.1, -263.802, -70.546),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_secinner", 
+        hash = 1243560448,
+        vec = vector3(2467.545, -272.236, -70.546),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_outerdblleft", 
+        hash = 1129244853,
+        vec = vector3(2475.336, -281.316, -71.698),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_outerdblright", 
+        hash = 1129244853,
+        vec = vector3(2475.338, -277.171, -71.698),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
     {
         name = "vault_backroom", 
         hash = -2023754432,
@@ -894,9 +1029,25 @@ AlterableDoors = {
         restrictedGroups = {}
     },
     {
+        name = "vault_vaultouterright", 
+        hash = -1710290106,
+        vec = vector3(2464.183, -278.204, -71.694),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
         name = "vault_vaultinnerleft", 
         hash = -1710290106,
         vec = vector3(2492.28, -237.459, -71.739),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_vaultinnerright", 
+        hash = -1549164937,
+        vec = vector3(2492.28, -239.544, -71.739),
         locked = false,
         restricted =  false,
         restrictedGroups = {}
@@ -908,6 +1059,125 @@ AlterableDoors = {
         locked = false,
         restricted =  false,
         restrictedGroups = {}
+    },
+    {
+        name = "vault_vault1inner", 
+        hash = -754698435,
+        vec = vector3(2514.195, -222.135, -71.742),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_vault2door", 
+        hash = -219532439,
+        vec = vector3(2533.56, -239.617, -71.742),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_vault2inner", 
+        hash = -754698435,
+        vec = vector3(2536.185, -232.209, -71.742),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_vault2inner2", 
+        hash = -754698435,
+        vec = vector3(2536.184, -244.87, -71.742),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_vault3door", 
+        hash = -219532439,
+        vec = vector3(2519.938, -251.05, -71.742),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_vault3inner", 
+        hash = -754698435,
+        vec = vector3(2514.696, -253.672, -71.742),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_leftstorageouterleft", 
+        hash = 187642590,
+        vec = vector3(2494.676, -275.393, -70.567),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_leftstorageouterright", 
+        hash = 187642590,
+        vec = vector3(2494.714, -277.478, -70.567),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_rightstorageouterleft", 
+        hash = 187642590,
+        vec = vector3(2494.676, -280.99, -70.567),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_rightstorageouterright", 
+        hash = 187642590,
+        vec = vector3(2494.714, -283.074, -70.567),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_leftstorageinnerleft", 
+        hash = 187642590,
+        vec = vector3(2501.025, -275.393, -70.567),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_leftstorageinnerright", 
+        hash = 187642590,
+        vec = vector3(2501.063, -277.478, -70.567),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_rightstorageinnerleft", 
+        hash = 187642590,
+        vec = vector3(2501.025, -280.99, -70.567),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_rightstorageinnerright", 
+        hash = 187642590,
+        vec = vector3(2501.063, -283.074, -70.567),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
+    },
+    {
+        name = "vault_LARGEGOLDVAULTDOOR", 
+        hash = 1625014289,
+        vec = vector3(2505.117, -238.535, -69.945),
+        locked = false,
+        restricted =  false,
+        restrictedGroups = {}
     }
 }
--- 2064258414

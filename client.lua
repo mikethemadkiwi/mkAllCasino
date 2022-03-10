@@ -1,6 +1,7 @@
 local MKDEBUGSHOW = false -- shows polyzone and onscreen closest door perms
 -------------------------------------
 -- remove player from vehicle THEN pedwarp
+-- 2064258414 - is this the proper spin wheel????
 -------------------------------------
 -- perms for security
 -- {
@@ -190,7 +191,7 @@ Citizen.CreateThread(function()
         -----------------------------------------
         for door = 1, #UnlockedDoors do
             local DoorDistance = #(pCoords -  UnlockedDoors[door].vec)
-            if DoorDistance < 59 then         
+            if DoorDistance < 25 then         
                 UnlockedDoors[door].doorObj = GetClosestObjectOfType(UnlockedDoors[door].vec.x, UnlockedDoors[door].vec.y, UnlockedDoors[door].vec.z, 1.0, UnlockedDoors[door].hash, false, false, false);
                 if UnlockedDoors[door].doorObj then   
                     UnlockedDoors[door].DOOR_UUID = 'ud_'..door..''
@@ -210,12 +211,12 @@ Citizen.CreateThread(function()
             end
         end
         -----------------------------------------
-        cd_distance = 59
+        cd_distance = 25
         closestDoor = nil
         -----------------------------------------
         for door = 1, #AlterableDoors do
             local DoorDistance = #(pCoords -  AlterableDoors[door].vec)
-            if DoorDistance < 59 then         
+            if DoorDistance < 25 then         
                 AlterableDoors[door].doorObj = GetClosestObjectOfType(AlterableDoors[door].vec.x, AlterableDoors[door].vec.y, AlterableDoors[door].vec.z, 1.0, AlterableDoors[door].hash, false, false, false);
                 if AlterableDoors[door].doorObj then   
                     AlterableDoors[door].DOOR_UUID = 'ad_'..door..''
@@ -324,6 +325,7 @@ Citizen.CreateThread(function()
 	while true do
         Citizen.Wait(0)
         if isInZone == true then
+            drawOnScreen2D('~w~Press "E" to Select a floor', 186, 218, 85, 1, 0.05, 0.15, 0.3)
             if IsControlJustPressed(0, 51) then
                 if lastInteractedZone[1] == 'elevator' then 
                     SendNUIMessage({
