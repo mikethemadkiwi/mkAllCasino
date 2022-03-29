@@ -213,7 +213,7 @@ VehicleTeleports = {
         entryPos = vector3(2652.8, -341.6, -64.7),
         exitPos = vector3(997.5, -59.2, 75.0),
         exitHeading = 115.668,
-        restricted =  true,
+        restricted =  false,
         restrictedGroups = {}
     },
     {
