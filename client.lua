@@ -30,7 +30,7 @@ function RequestAllIpls()
     Citizen.Wait(1)
     loadVault()
     Citizen.Wait(1)
-    Print('Loaded Casino IPL')
+    print('Loaded Casino IPL')
     -- ActivateInteriorEntitySet(274689, "Set_Pent_Arcade_Retro")  
 end
 function loadMainIPL()
